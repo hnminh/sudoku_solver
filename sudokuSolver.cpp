@@ -82,26 +82,34 @@ bool solved(int grid[DIMENSION][DIMENSION]){
 	if (nextBlank == GRID_FULL) return true;
 	else {
 
-		// the row and column of the blank
+		// the position of the blank
+		// <row, column>
 		int row = nextBlank.first;
 		int col = nextBlank.second;
 
 		// try for that blank from 1 to 9
 		for (int value = 1; value <= 9; value++)
 
-			// if the value hasn't used in any row, column or box
+			// if the value hasn't been used in any row, column or box
 			if (!usedInRow(grid, row, value) && !usedInColumn(grid, col, value) && !usedInBox(grid, row - row%3, col - col%3, value)){
 
 				grid[row][col] = value;
 
-				// attempt to the next one
-				if (solved(grid))	// if the grid is full then this case is true
+				// attempt to the next blank
+
+				if (solved(grid))	
+					// if the grid is full with all the valid digits
+					// then this case is true
 					return true;
-				else	// the grid is unable to full, so this case is wrong
+				else	
+					// the grid is unable to full, or duplicate values
+					// so this case is false
 					grid[row][col] = BLANK;
 			}
-			// the wrong case
-			return false;
+
+		// unable to have all the values being used
+		// while there is a blank
+		return false;
 	}
 
 }
